@@ -1,28 +1,19 @@
-"""
-=================================================
-Demo of affinity propagation clustering algorithm
-=================================================
-
-Reference:
-Brendan J. Frey and Delbert Dueck, "Clustering by Passing Messages
-Between Data Points", Science Feb. 2007
-
-"""
-print(__doc__)
-
+from matplotlib import colors
 from sklearn.cluster import AffinityPropagation
 from sklearn import metrics
-from sklearn.datasets.samples_generator import make_blobs
-
+from sklearn.datasets import load_digits
 # #############################################################################
 # Generate sample data
-centers = [[1, 1], [-1, -1], [1, -1]]
-X, labels_true = make_blobs(n_samples=300, centers=centers, cluster_std=0.5,
-                            random_state=0)
+from sklearn.decomposition import PCA
+
+digits = load_digits()
+centers = [[1, 1], [-1, -1], [1, -1], [-1, 1]]
+X = digits.data
+labels_true = digits.target
 
 # #############################################################################
 # Compute Affinity Propagation
-af = AffinityPropagation(preference=-50).fit(X)
+af = AffinityPropagation(preference=-5000).fit(X)
 cluster_centers_indices = af.cluster_centers_indices_
 labels = af.labels_
 
@@ -48,16 +39,12 @@ from itertools import cycle
 plt.close('all')
 plt.figure(1)
 plt.clf()
+x_compress = PCA(n_components=2).fit_transform(X)
+plt.subplot(222).set_title('AffinityPropagation')
+plt.scatter(x_compress[:, 0], x_compress[:, 1], c=labels)
+plt.subplot(221).set_title('TrueLabel')
+plt.scatter(x_compress[:, 0], x_compress[:, 1], c=labels_true)
 
-colors = cycle('bgrcmykbgrcmykbgrcmykbgrcmyk')
-for k, col in zip(range(n_clusters_), colors):
-    class_members = labels == k
-    cluster_center = X[cluster_centers_indices[k]]
-    plt.plot(X[class_members, 0], X[class_members, 1], col + '.')
-    plt.plot(cluster_center[0], cluster_center[1], 'o', markerfacecolor=col,
-             markeredgecolor='k', markersize=14)
-    for x in X[class_members]:
-        plt.plot([cluster_center[0], x[0]], [cluster_center[1], x[1]], col)
-
-plt.title('Estimated number of clusters: %d' % n_clusters_)
+#plt.title('Estimated number of clusters: %d' % n_clusters_)
 plt.show()
+
