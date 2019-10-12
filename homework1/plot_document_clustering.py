@@ -72,6 +72,8 @@ import numpy as np
 
 
 # Display progress logs on stdout
+from digits_mean_shift import x_compress
+
 logging.basicConfig(level=logging.INFO,
                     format='%(asctime)s %(levelname)s %(message)s')
 
