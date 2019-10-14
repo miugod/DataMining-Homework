@@ -1,5 +1,3 @@
-import numpy as np
-
 from matplotlib import pyplot as plt
 from sklearn import cluster
 from sklearn import datasets
@@ -25,6 +23,7 @@ x_compress = PCA(n_components=2).fit_transform(data)
 y_true = digits.target
 #表格：nmi, homogeneity, completeness的值
 print('-' * 50)
+print('digits聚类结果')
 print("%-25s\t%-5s\t%-5s\t%-5s" % ('', 'NMI', 'Homo', 'Comp'))
 #plt.figure(figsize=(20, 20))
 
