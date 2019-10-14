@@ -1,6 +1,6 @@
 import numpy as np
 
-from sklearn import datasets, cluster, metrics
+from sklearn import datasets, cluster, metrics, mixture
 from sklearn.decomposition import PCA
 
 from sklearn.decomposition import TruncatedSVD
@@ -31,6 +31,7 @@ y = news.target
 #true_k = np.unique(y_true).shape[0]
 
 print('-' * 50)
+print('20newsgroup聚类结果')
 print('%-20s\t%-5s\t%-5s\t%-5s' % ('', 'NMI', 'Homo', 'Comp'))
 
 def funct(y, pred, name):
@@ -42,10 +43,10 @@ def funct(y, pred, name):
          ))
 
 pred = cluster.KMeans(n_clusters=4, random_state=10).fit_predict(data)
-#funct(y, y_pred, 'K-Means')
+funct(y, pred, 'K-Means')
 
 pred = cluster.AffinityPropagation(damping=0.8, preference=-2000).fit_predict(data)
-#funct(y, y_pred, 'AffinityPropagation')
+funct(y, pred, 'AffinityPropagation')
 
 pred = cluster.MeanShift(bandwidth=0.5).fit_predict(data)
 funct(y, pred, 'MeanShift')
@@ -53,8 +54,20 @@ funct(y, pred, 'MeanShift')
 pred = cluster.SpectralClustering(n_clusters=4).fit_predict(data)
 funct(y, pred, 'SpectralClustering')
 
+pred = cluster.AgglomerativeClustering(n_clusters=4,
+                                         linkage='ward').fit_predict(data)
+funct(y, pred, 'Ward')
 
+pred = cluster.AgglomerativeClustering(n_clusters=4,
+                                         linkage='average',
+                                         affinity='manhattan').fit_predict(data)
+funct(y, pred, 'AgglomerativeClustering')
 
+pred = cluster.DBSCAN(eps=0.005, min_samples=10).fit_predict(data)
+funct(y, pred, 'DBSCAN')
+
+pred = mixture.GaussianMixture(n_components=4).fit_predict(data)
+funct(y, pred, 'GaussianMixture')
 
 print('-' * 50)
 
