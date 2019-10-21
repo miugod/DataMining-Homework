@@ -54,3 +54,6 @@ DBSCAN              	0.405	0.436	0.378
 GaussianMixture     	0.434	0.433	0.434
 --------------------------------------------------
 ##结果分析
+总体而言，由于digits数据集比较简单，所以digits聚类的结果比20newsgroup的聚类结果要好。
+经过调参后，meanshift，spectralclustering和AgglomerativeClustering的结果较好，而AffinityPropagation和DBSCAN的结果不太好，且对于参数的依赖性较大。
+在运行时，AffinityPropagation和AgglomerativeClustering的运行时间较之其他方法更长，因为他们的时间复杂度较大。
