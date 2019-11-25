@@ -4,35 +4,35 @@
 # In[ ]:
 
 
-1.赛题分析
-论文的增量消歧(Continuous Name Disambiguation)
-任务描述：线上系统每天会新增大量的论文，如何准确快速的将论文分配到系统中已有作者档案，这是线上学术系统最亟待解决的问题。所以问题抽象定义为：给定一批新增论文以及系统已有的作者论文集，最终目的是把新增论文分配到正确的作者档案中。
-参考方法：增量消歧任务与冷启动消歧的任务不同，它是基于有一定作者档案的基础，对新增论文进行分配。所以，容易直接想到的方法就是将已有的作者档案与新增论文进行比较，提取合作者，单位机构或者会议期刊之间相似度的传统特征，随后利用svm之类的传统分类器进行分类。
+#1.赛题分析
+#论文的增量消歧(Continuous Name Disambiguation)
+#任务描述：线上系统每天会新增大量的论文，如何准确快速的将论文分配到系统中已有作者档案，这是线上学术系统最亟待解决的问题。所以问题抽象定义为：给定一批新增论文以及系统已有的作者论文集，最终目的是把新增论文分配到正确的作者档案中。
+#参考方法：增量消歧任务与冷启动消歧的任务不同，它是基于有一定作者档案的基础，对新增论文进行分配。所以，容易直接想到的方法就是将已有的作者档案与新增论文进行比较，提取合作者，单位机构或者会议期刊之间相似度的传统特征，随后利用svm之类的传统分类器进行分类。
 
 # In[ ]:
 
 
-2.数据处理
+#2.数据处理
 
 # In[2]:
 
 
-2-1.生成训练数据
+#2-1.生成训练数据
 
 # In[21]:
 
 
 import json
 import random
-from pyjarowinkler import distance
+#from pyjarowinkler import distance
 import numpy as np
 
 # 训练集中的作者论文信息
-with open("cna_data/train_author.json", "r") as f2:
+with open("train/train_author.json", "r") as f2:
     author_data = json.load(f2)
 
 # 训练集的论文元信息
-with open("cna_data/train_pub.json", "r") as f2:
+with open("train/train_pub.json", "r") as f2:
     pubs_dict = json.load(f2)
 
 print(len(author_data))
@@ -98,8 +98,8 @@ print(len(train_instances))
 # In[ ]:
 
 
-2-2.生成特征
-在这里，我们只提取paper与author之间的coauthor相关的特征:
+#2-2.生成特征
+#在这里，我们只提取paper与author之间的coauthor相关的特征:
 
 # In[22]:
 
@@ -284,7 +284,7 @@ print(np.array(neg_features).shape)
 # In[ ]:
 
 
-3. 利用svm进行训练
+#3. 利用svm进行训练
 
 # In[26]:
 
@@ -317,7 +317,7 @@ clf.fit(x_train, y_train)
 # In[ ]:
 
 
-4.加载处理测试数据
+#4.加载处理测试数据
 
 # In[39]:
 
@@ -507,7 +507,7 @@ print(len(paper2candidates))
 # In[48]:
 
 
-5. 利用训练好的svm模型去预测
+#5. 利用训练好的svm模型去预测
 
 # In[68]:
 
@@ -531,4 +531,4 @@ with open("cna_data/result.json", 'w') as files:
 # In[ ]:
 
 
-提交评测后，结果为F1 = 0.63100
+#提交评测后，结果为F1 = 0.63100
